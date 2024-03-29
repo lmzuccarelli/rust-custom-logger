@@ -85,7 +85,42 @@ impl Logging {
             );
         }
     }
-
+    // info with low level highlight
+    pub fn lo(&self, msg: &str) {
+        if self.log_level == Level::INFO
+            || self.log_level == Level::DEBUG
+            || self.log_level == Level::TRACE
+        {
+            let dt = Local::now();
+            let naive_utc = dt.naive_utc();
+            let offset = dt.offset().clone();
+            let dt_new = DateTime::<Local>::from_naive_utc_and_offset(naive_utc, offset);
+            println!(
+                "\x1b[1;93m [ {}  {} ]  \x1b[0m : \x1b[1;93m{} \x1b[0m",
+                "INFO",
+                dt_new.to_rfc3339(),
+                msg
+            );
+        }
+    }
+    // info with extra level highlight
+    pub fn ex(&self, msg: &str) {
+        if self.log_level == Level::INFO
+            || self.log_level == Level::DEBUG
+            || self.log_level == Level::TRACE
+        {
+            let dt = Local::now();
+            let naive_utc = dt.naive_utc();
+            let offset = dt.offset().clone();
+            let dt_new = DateTime::<Local>::from_naive_utc_and_offset(naive_utc, offset);
+            println!(
+                "\x1b[1;94m [ {}  {} ]  \x1b[0m : \x1b[1;98m{} \x1b[0m",
+                "INFO",
+                dt_new.to_rfc3339(),
+                msg
+            );
+        }
+    }
     /// trace
     pub fn trace(&self, msg: &str) {
         let dt = Local::now();
@@ -185,6 +220,22 @@ mod tests {
             log_level: Level::INFO,
         };
         log.hi("testing hi logging");
+    }
+
+    #[test]
+    fn test_lo_pass() {
+        let log = &Logging {
+            log_level: Level::INFO,
+        };
+        log.lo("testing lo logging");
+    }
+
+    #[test]
+    fn test_ex_pass() {
+        let log = &Logging {
+            log_level: Level::INFO,
+        };
+        log.ex("testing ex logging");
     }
 
     #[test]
