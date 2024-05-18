@@ -135,12 +135,10 @@ impl Logging {
         let offset = dt.offset().clone();
         let dt_new = DateTime::<Local>::from_naive_utc_and_offset(naive_utc, offset);
         let dt_formated = dt_new.format("%Y-%m-%d %H:%M:%S%.3f");
-        if self.log_level == Level::WARN || self.log_level == Level::INFO {
-            println!(
-                "\x1b[1;93m [ {}  {} ] \x1b[0m  : {}",
-                "WARN", dt_formated, msg
-            );
-        }
+        println!(
+            "\x1b[1;93m [ {}  {} ] \x1b[0m  : {}",
+            "WARN", dt_formated, msg
+        );
     }
     /// error
     pub fn error(&self, msg: &str) {
